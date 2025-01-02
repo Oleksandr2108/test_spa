@@ -4,12 +4,22 @@ import { useGetUsersQuery } from "@/store/services/usersApi";
 import { User } from "@/types/user";
 import UserItem from "../UserItem/UserItem";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Pagination from "../Pagination/Pagination";
-import { useFilteredUsers } from "@/hooks/useFilteredUsers";
 import Dropdown from "../Dropdown/Dropdown";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setSearchTerm,
+  setSelectedCompany,
+  setCurrentPage,
+  setLimit,
+  setUsers,
+  applyFilters,
+} from "@/store/slices/usersSlice";
+import { RootState } from "@/store/store";
 
 const UsersList = () => {
+  const dispatch = useDispatch();
   const { data: users = [] } = useGetUsersQuery();
 
   const searchParams = useSearchParams();
@@ -18,25 +28,43 @@ const UsersList = () => {
   const currentLimit = searchParams?.get("limit") || "5";
   const currentCompany = searchParams?.get("company") || "";
 
-  const [selectedCompany, setSelectedCompany] = useState("All Companies");
-  const [searchTerm, setSearchTerm] = useState(searchQuery);
+  const {
+    searchTerm,
+    selectedCompany,
+    currentPage: page,
+    filteredUsers,
+    totalPage,
+  } = useSelector((state: RootState) => state.users);
 
   const classForTableTitle =
     "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
 
-  const { filteredUsers, totalPage } = useFilteredUsers(
-    users,
-    searchTerm,
-    selectedCompany,
-    Number(currentPage),
-    Number(currentLimit)
-  );
+    useEffect(() => {
+      if (users.length > 0) {
+        dispatch(setUsers(users));
+        dispatch(applyFilters());
+      }
+    }, [users, dispatch]);
+
+  useEffect(() => {
+    dispatch(setSearchTerm(searchQuery));
+    dispatch(setCurrentPage(Number(currentPage)));
+    dispatch(setLimit(Number(currentLimit)));
+    if (currentCompany) {
+      dispatch(setSelectedCompany(currentCompany));
+    }
+  }, [searchQuery, currentPage, currentLimit, currentCompany, dispatch]);
+
+  useEffect(() => {
+    dispatch(applyFilters());
+  }, [searchTerm, selectedCompany, page, dispatch]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+    dispatch(setSearchTerm(event.target.value));
   };
 
   const handlePageChange = (page: number) => {
+    dispatch(setCurrentPage(page));
     const newSearchParams = new URLSearchParams(window.location.search);
     newSearchParams.set("page", String(page));
     window.history.pushState(null, "", `?${newSearchParams.toString()}`);
@@ -58,7 +86,7 @@ const UsersList = () => {
       newSearchParams.delete("search");
     }
 
-    newSearchParams.set("page", currentPage);
+    newSearchParams.set("page", String(page));
     newSearchParams.set("limit", currentLimit);
     if (selectedCompany !== "All Companies") {
       newSearchParams.set("company", selectedCompany);
@@ -67,7 +95,7 @@ const UsersList = () => {
     }
 
     window.history.pushState(null, "", `?${newSearchParams.toString()}`);
-  }, [currentCompany, currentLimit, currentPage, searchTerm, selectedCompany]);
+  }, [currentLimit, page, searchTerm, selectedCompany]);
 
   return (
     <div>
@@ -77,12 +105,12 @@ const UsersList = () => {
           value={searchTerm}
           onChange={handleSearchChange}
           placeholder="Search by name"
-          className="mb-4 px-3 py-2 border-b "
+          className="mb-4 px-3 py-2 border-b"
         />
         <Dropdown
           options={uniqueCompanies}
           selected={selectedCompany}
-          onSelect={setSelectedCompany}
+          onSelect={(company) => dispatch(setSelectedCompany(company))}
         />
       </div>
 
@@ -107,7 +135,7 @@ const UsersList = () => {
       </table>
 
       <Pagination
-        currentPage={Number(currentPage)}
+        currentPage={page}
         totalPage={totalPage}
         onPageChange={handlePageChange}
       />
