@@ -6,6 +6,7 @@ interface UsersState {
   users: User[];
   searchTerm: string;
   selectedCompany: string;
+  selectedLimit: number;
   currentPage: number;
   limit: number;
   filteredUsers: User[];
@@ -17,6 +18,7 @@ const initialState: UsersState = {
   users: [],
   searchTerm: "",
   selectedCompany: "All Companies",
+  selectedLimit: 5,
   currentPage: 1,
   limit: 5,
   filteredUsers: [],
@@ -38,6 +40,9 @@ const usersSlice = createSlice({
     },
     setSelectedCompany(state, action: PayloadAction<string>) {
       state.selectedCompany = action.payload;
+    },
+    setSelectedLimit(state, action: PayloadAction<number>) {
+      state.selectedLimit = action.payload;
     },
     setCurrentPage(state, action: PayloadAction<number>) {
       state.currentPage = action.payload;
@@ -63,6 +68,7 @@ const usersSlice = createSlice({
       const endIndex = startIndex + state.limit;
 
       state.filteredUsers = filtered.slice(startIndex, endIndex);
+     
     },
   },
 });
@@ -72,6 +78,7 @@ export const {
   setUsers,
   setSearchTerm,
   setSelectedCompany,
+  setSelectedLimit,
   setCurrentPage,
   setLimit,
   applyFilters,

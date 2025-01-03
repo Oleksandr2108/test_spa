@@ -2,12 +2,16 @@
 
 import { User } from "@/types/user";
 import Link from "next/link";
+import { useDispatch} from "react-redux";
+import { setUser } from "@/store/slices/usersSlice";
 
 interface PropsUserItem {
   user: User;
 }
 
 const UserItem: React.FC<PropsUserItem> = ({ user }) => {
+  const dispatch = useDispatch()
+
   return (
     <tr key={user.id} className="hover:bg-gray-50">
     <td className="px-6 py-4 whitespace-nowrap">
@@ -25,7 +29,8 @@ const UserItem: React.FC<PropsUserItem> = ({ user }) => {
     <td className="px-6 py-4 whitespace-nowrap text-sm">
       <Link
         href={`/users/${user.id}`}
-        className="text-blue-600 hover:text-blue-900"
+          className="text-blue-600 hover:text-blue-900"
+          onClick={() => dispatch(setUser(user))}
       >
         View Details
       </Link>

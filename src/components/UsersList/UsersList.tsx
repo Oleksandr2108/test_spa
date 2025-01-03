@@ -39,12 +39,12 @@ const UsersList = () => {
   const classForTableTitle =
     "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
 
-    useEffect(() => {
-      if (users.length > 0) {
-        dispatch(setUsers(users));
-        dispatch(applyFilters());
-      }
-    }, [users, dispatch]);
+  useEffect(() => {
+    if (users.length > 0) {
+      dispatch(setUsers(users));
+      dispatch(applyFilters());
+    }
+  }, [users, dispatch]);
 
   useEffect(() => {
     dispatch(setSearchTerm(searchQuery));
@@ -77,6 +77,17 @@ const UsersList = () => {
       )
     )
   ).map((company) => JSON.parse(company));
+
+  const handleLimitChange = (newLimit: number) => {
+    dispatch(setLimit(newLimit));
+    dispatch(applyFilters());
+
+    const newSearchParams = new URLSearchParams(window.location.search);
+    newSearchParams.set("limit", newLimit.toString());
+    window.history.pushState(null, "", `?${newSearchParams.toString()}`);
+  };
+
+  const limitPageArray = [5, 10, 15, users.length];
 
   useEffect(() => {
     const newSearchParams = new URLSearchParams(window.location.search);
@@ -112,6 +123,14 @@ const UsersList = () => {
           selected={selectedCompany}
           onSelect={(company) => dispatch(setSelectedCompany(company))}
         />
+        {limitPageArray.map((item, index) => (
+          <span
+            key={index}
+            onClick={() => handleLimitChange(item)}
+          >
+            {item}
+          </span>
+        ))}
       </div>
 
       <table className="min-w-full divide-y divide-gray-200">
@@ -129,6 +148,7 @@ const UsersList = () => {
             <UserItem
               user={user}
               key={user.id}
+              
             />
           ))}
         </tbody>

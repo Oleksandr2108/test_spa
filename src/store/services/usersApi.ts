@@ -17,7 +17,15 @@ export const usersApi = createApi({
         return response.find((user) => user.id.toString() === id) as User;
       },
     }),
+    updateUser: builder.mutation<User, Partial<User> & { id: number }>({
+      query: ({ id, ...patch }) => ({
+        url: `/users/${id}`,
+        method: "PUT",
+        body: patch,
+      }),
+    }),
   }),
 });
 
-export const { useGetUsersQuery, useGetUserByIdQuery } = usersApi;
+export const { useGetUsersQuery, useGetUserByIdQuery, useUpdateUserMutation } =
+  usersApi;
