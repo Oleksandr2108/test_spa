@@ -10,6 +10,7 @@ const Header = () => {
   const navItem = [
     { label: "Main", href: ROUTES.HOME },
     { label: "Users", href: ROUTES.USERS },
+    { label: "Analytics", href: ROUTES.ANALYTICS },
   ];
 
   return (

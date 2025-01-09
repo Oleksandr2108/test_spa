@@ -9,60 +9,74 @@ interface EditUserFormProps {
 }
 
 const EditUserForm: React.FC<EditUserFormProps> = ({ user, onClose }) => {
-  const [formData, setFormData] = useState({
-    name: user.name,
-  });
-
-  const [updateUser, { isLoading, isError }] = useUpdateUserMutation();
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const [formData, setFormData] = useState<User>(user); 
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      await updateUser({ id: user.id, ...formData }).unwrap();
-      onClose();
+      await updateUser(formData).unwrap();
+      
+      onClose(); 
     } catch (error) {
       console.error("Error updating user:", error);
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white rounded-lg p-5 shadow-md max-w-md mx-auto"
-    >
-      <h2 className="text-xl font-semibold mb-4">Edit user</h2>
-      <div className="mb-3">
-        <label
-          htmlFor="name"
-          className="block text-sm font-medium"
-        >
+    <form onSubmit={handleSubmit} className="space-y-4">
+      
+      <div>
+        <label htmlFor="name" className="block text-sm font-medium">
           Name
         </label>
         <input
-          type="text"
           id="name"
-          name="name"
           value={formData.name}
-          onChange={handleInputChange}
-          className="w-full border px-3 py-2 rounded"
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md p-2"
           required
         />
       </div>
 
-      <button
-        type="submit"
-        className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-        disabled={isLoading}
-      >
-        Save
-      </button>
-      {isError && <p className="text-red-500 mt-2">Error</p>}
+  
+      <div>
+        <label htmlFor="email" className="block text-sm font-medium">
+          Email
+        </label>
+        <input
+          id="email"
+          type="email"
+          value={formData.email}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          required
+        />
+      </div>
+
+   
+      <div className="flex justify-end space-x-2">
+        <button
+          type="button"
+          onClick={onClose}
+          className="px-4 py-2 border border-gray-300 rounded-md text-gray-600 hover:bg-gray-100"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+        >
+          {isLoading ? "Saving..." : "Save"}
+        </button>
+      </div>
     </form>
   );
 };

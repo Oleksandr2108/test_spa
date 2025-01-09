@@ -7,25 +7,45 @@ export const usersApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
   }),
+  tagTypes: ["User"],
   endpoints: (builder) => ({
     getUsers: builder.query<User[], void>({
       query: () => "/users.json",
+      providesTags: ["User"],
     }),
     getUserById: builder.query<User, string>({
       query: () => "/users.json",
       transformResponse: (response: User[], _, id: string) => {
         return response.find((user) => user.id.toString() === id) as User;
       },
+      providesTags: ["User"],
     }),
-    updateUser: builder.mutation<User, Partial<User> & { id: number }>({
-      query: ({ id, ...patch }) => ({
-        url: `/users/${id}`,
+    updateUser: builder.mutation({
+      query: (user) => ({
+        url: "users",
         method: "PUT",
-        body: patch,
+        body: user,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    exportUsers: builder.mutation<Blob, { searchTerm: string, selectedCompany: string }>({
+      query: (filters) => ({
+        url: "export-users",
+        method: "POST",  
+        body: { 
+          format: "csv", 
+          searchTerm: filters.searchTerm,
+          selectedCompany: filters.selectedCompany,
+        }, 
+        responseHandler: (response) => response.blob(), 
       }),
     }),
   }),
 });
 
-export const { useGetUsersQuery, useGetUserByIdQuery, useUpdateUserMutation } =
-  usersApi;
+export const {
+  useGetUsersQuery,
+  useGetUserByIdQuery,
+  useUpdateUserMutation,
+  useExportUsersMutation,
+} = usersApi;

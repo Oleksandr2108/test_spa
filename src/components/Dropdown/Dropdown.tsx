@@ -12,7 +12,7 @@ const Dropdown = ({ options, selected, onSelect }: DropdownProps) => {
   return (
     <div className="relative w-96">
       <div
-        className="w-40 h-5 border-b relative cursor-pointer"
+        className="w-40  border-b relative cursor-pointer pb-2"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span>{selected}</span>

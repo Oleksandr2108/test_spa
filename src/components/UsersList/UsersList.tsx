@@ -17,6 +17,7 @@ import {
   applyFilters,
 } from "@/store/slices/usersSlice";
 import { RootState } from "@/store/store";
+import ExportUsersButton from "../ExportComponent/Export";
 
 const UsersList = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const UsersList = () => {
     currentPage: page,
     filteredUsers,
     totalPage,
+    limit,
   } = useSelector((state: RootState) => state.users);
 
   const classForTableTitle =
@@ -77,17 +79,18 @@ const UsersList = () => {
       )
     )
   ).map((company) => JSON.parse(company));
+  console.log(users.length);
+  const handleLimitChange = () => {
+    if (users.length > limit) {
+      const newLimit = limit + 5;
+      dispatch(setLimit(newLimit));
+      dispatch(applyFilters());
 
-  const handleLimitChange = (newLimit: number) => {
-    dispatch(setLimit(newLimit));
-    dispatch(applyFilters());
-
-    const newSearchParams = new URLSearchParams(window.location.search);
-    newSearchParams.set("limit", newLimit.toString());
-    window.history.pushState(null, "", `?${newSearchParams.toString()}`);
+      const newSearchParams = new URLSearchParams(window.location.search);
+      newSearchParams.set("limit", newLimit.toString());
+      window.history.pushState(null, "", `?${newSearchParams.toString()}`);
+    }
   };
-
-  const limitPageArray = [5, 10, 15, users.length];
 
   useEffect(() => {
     const newSearchParams = new URLSearchParams(window.location.search);
@@ -123,14 +126,6 @@ const UsersList = () => {
           selected={selectedCompany}
           onSelect={(company) => dispatch(setSelectedCompany(company))}
         />
-        {limitPageArray.map((item, index) => (
-          <span
-            key={index}
-            onClick={() => handleLimitChange(item)}
-          >
-            {item}
-          </span>
-        ))}
       </div>
 
       <table className="min-w-full divide-y divide-gray-200">
@@ -148,11 +143,20 @@ const UsersList = () => {
             <UserItem
               user={user}
               key={user.id}
-              
             />
           ))}
         </tbody>
       </table>
+      {users.length > limit && (
+        <div
+          className=" w-40 bg-blue-200 rounded-lg m-auto my-5 text-center cursor-pointer"
+          onClick={() => handleLimitChange()}
+        >
+          {" "}
+          Show more{" "}
+        </div>
+      )}
+      <ExportUsersButton />
 
       <Pagination
         currentPage={page}

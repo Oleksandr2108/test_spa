@@ -11,6 +11,7 @@ interface UsersState {
   limit: number;
   filteredUsers: User[];
   totalPage: number;
+  totalUsers: number;
 }
 
 const initialState: UsersState = {
@@ -23,6 +24,7 @@ const initialState: UsersState = {
   limit: 5,
   filteredUsers: [],
   totalPage: 1,
+  totalUsers: 0,
 };
 
 const usersSlice = createSlice({
@@ -34,6 +36,7 @@ const usersSlice = createSlice({
     },
     setUsers(state, action: PayloadAction<User[]>) {
       state.users = action.payload;
+      state.totalUsers = action.payload.length;
     },
     setSearchTerm(state, action: PayloadAction<string>) {
       state.searchTerm = action.payload;
