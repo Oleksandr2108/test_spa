@@ -1,11 +1,8 @@
 'use client'
 import AlalyticsPage from "@/pages/AlalyticsPage/AlalyticsPage";
 
- 
 
-
-const Analytics = () => {
+export default function Analytics () {
   return (<AlalyticsPage/>)
 }
 
-export default Analytics;

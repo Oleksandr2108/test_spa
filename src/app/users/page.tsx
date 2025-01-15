@@ -1,14 +1,11 @@
-'use client'
+"use client";
 
-import UserPage from "@/pages/UserPage/UserPage"
+import UserPage from "@/pages/UserPage/UserPage";
 
-
-export const Users = () => {
+export default function Users() {
   return (
     <div>
-      <UserPage/>
+      <UserPage />
     </div>
-  )
+  );
 }
-
-export default Users
