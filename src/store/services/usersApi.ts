@@ -28,16 +28,19 @@ export const usersApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
-    exportUsers: builder.mutation<Blob, { searchTerm: string, selectedCompany: string }>({
+    exportUsers: builder.mutation<
+      Blob,
+      { searchTerm: string; selectedCompany: string }
+    >({
       query: (filters) => ({
         url: "export-users",
-        method: "POST",  
-        body: { 
-          format: "csv", 
+        method: "POST",
+        body: {
+          format: "csv",
           searchTerm: filters.searchTerm,
           selectedCompany: filters.selectedCompany,
-        }, 
-        responseHandler: (response) => response.blob(), 
+        },
+        responseHandler: (response) => response.blob(),
       }),
     }),
   }),

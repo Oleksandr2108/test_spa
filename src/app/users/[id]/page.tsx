@@ -3,7 +3,8 @@
 import UserDetailPage from "@/pages/UserDetailPage/UserDetailPage";
 import { useGetUserByIdQuery } from "@/store/services/usersApi";
 import { setUser } from "@/store/slices/usersSlice";
-import React, { useEffect } from "react";
+import React from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 interface UserByIdProps {
@@ -20,6 +21,7 @@ const UserById = ({ params }: UserByIdProps) => {
       dispatch(setUser(user));
     }
   }, [dispatch, user]);
+
   return (
     <div>
       <UserDetailPage />
