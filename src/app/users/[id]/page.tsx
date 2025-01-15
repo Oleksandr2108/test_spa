@@ -1,12 +1,19 @@
 "use client";
 
-import UserDetailPage from "@/pages/UserDetailPage/UserDetailPage";
+import dynamic from "next/dynamic";
+
 import { useGetUserByIdQuery } from "@/store/services/usersApi";
 import { setUser } from "@/store/slices/usersSlice";
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
+const UserDetailPage = dynamic(
+  () => import("@/pages/UserDetailPage/UserDetailPage"),
+  {
+    ssr: false,
+  }
+);
 interface PageProps {
   params: Promise<{
     id: string;
