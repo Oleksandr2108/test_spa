@@ -6,9 +6,13 @@ import { setUser } from "@/store/slices/usersSlice";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-export const UserById = ({ params }: { params: Promise<{ id: string }> }) => {
+interface UserByIdProps {
+  params: { id: string };
+}
+
+const UserById = ({ params }: UserByIdProps) => {
   const dispatch = useDispatch();
-  const { id } = React.use(params);
+  const { id } = params;
   const { data: user } = useGetUserByIdQuery(id);
 
   useEffect(() => {
