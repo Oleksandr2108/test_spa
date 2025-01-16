@@ -27,6 +27,10 @@ export default function AnalyticsPage() {
 
   const totalUsers = useSelector((state: RootState) => state.users.totalUsers);
 
+  if (typeof window === 'undefined') {
+    return <div>Loading on Server...</div>;
+  }
+
   return (
     <div>
       <h1 className="text-center text-blue-600 font-extrabold text-6xl">

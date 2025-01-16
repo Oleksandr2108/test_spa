@@ -1,12 +1,6 @@
 "use client";
-import dynamic from "next/dynamic";
 
-const AnalyticsPage = dynamic(
-  () => import("@/pages/AlalyticsPage/AlalyticsPage"),
-  {
-    ssr: false,
-  }
-);
+import AnalyticsPage from "@/pagess/AlalyticsPage/AlalyticsPage";
 
 export default function Analytics() {
   return <AnalyticsPage />;
