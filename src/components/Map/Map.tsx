@@ -1,21 +1,22 @@
-'use client';
+"use client";
 
 import React from "react";
 import { useSelector } from "react-redux";
 
 import { RootState } from "@/store/store";
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
 const icon = L.icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+  shadowSize: [41, 41],
 });
 
 const MapUsers = () => {
@@ -28,8 +29,7 @@ const MapUsers = () => {
       <MapContainer
         center={defaultCenter}
         zoom={defaultZoom}
-        style={{ height: '100%', width: '100%' }}
-        
+        style={{ height: "100%", width: "100%" }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -40,7 +40,7 @@ const MapUsers = () => {
             key={user.id}
             position={[
               parseFloat(user.address.geo.lat),
-              parseFloat(user.address.geo.lng)
+              parseFloat(user.address.geo.lng),
             ]}
             icon={icon}
           >
@@ -51,13 +51,16 @@ const MapUsers = () => {
                   <span className="font-semibold">Email:</span> {user.email}
                 </p>
                 <p className="text-xs mb-1">
-                  <span className="font-semibold">Company:</span> {user.company.name}
+                  <span className="font-semibold">Company:</span>{" "}
+                  {user.company.name}
                 </p>
                 <p className="text-xs mb-1">
-                  <span className="font-semibold">City:</span> {user.address.city}
+                  <span className="font-semibold">City:</span>{" "}
+                  {user.address.city}
                 </p>
                 <p className="text-xs">
-                  <span className="font-semibold">Street:</span> {user.address.street}
+                  <span className="font-semibold">Street:</span>{" "}
+                  {user.address.street}
                 </p>
               </div>
             </Popup>
