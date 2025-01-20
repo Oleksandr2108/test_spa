@@ -9,7 +9,7 @@ interface EditUserFormProps {
 }
 
 const EditUserForm: React.FC<EditUserFormProps> = ({ user, onClose }) => {
-  const [formData, setFormData] = useState<User>(user); 
+  const [formData, setFormData] = useState<User>(user);
   const [updateUser, { isLoading }] = useUpdateUserMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -17,8 +17,8 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, onClose }) => {
 
     try {
       await updateUser(formData).unwrap();
-      
-      onClose(); 
+
+      onClose();
     } catch (error) {
       console.error("Error updating user:", error);
     }
@@ -30,10 +30,15 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, onClose }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 absolute w-full h-full "
+    >
+      <div className="w-60">
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium"
+        >
           Name
         </label>
         <input
@@ -44,10 +49,27 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, onClose }) => {
           required
         />
       </div>
+      <div className="w-60">
+        <label
+          htmlFor="username"
+          className="block text-sm font-medium"
+        >
+          Username
+        </label>
+        <input
+          id="username"
+          value={formData.username}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          required
+        />
+      </div>
 
-  
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium">
+      <div className="w-60">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium"
+        >
           Email
         </label>
         <input
@@ -59,8 +81,37 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, onClose }) => {
           required
         />
       </div>
+      <div className="w-60">
+        <label
+          htmlFor="website"
+          className="block text-sm font-medium"
+        >
+          Website
+        </label>
+        <input
+          id="website"
+          value={formData.website}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          required
+        />
+      </div>
+      <div className="w-60">
+        <label
+          htmlFor="phone"
+          className="block text-sm font-medium"
+        >
+          Phone
+        </label>
+        <input
+          id="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          required
+        />
+      </div>
 
-   
       <div className="flex justify-end space-x-2">
         <button
           type="button"

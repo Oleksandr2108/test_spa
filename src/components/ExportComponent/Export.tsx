@@ -30,9 +30,9 @@ const ExportUsersButton: React.FC = () => {
       <button
         onClick={handleDownload}
         disabled={isLoading}
-        className="btn"
+        className="p-2 rounded-xl bg-blue-200 hover:bg-blue-300"
       >
-        {isLoading ? "Exporting..." : "Export Filtered Users to CSV"}
+        {isLoading ? "Exporting..." : "Export to CSV"}
       </button>
       {error && <p className="text-red-500">{error}</p>}
     </div>

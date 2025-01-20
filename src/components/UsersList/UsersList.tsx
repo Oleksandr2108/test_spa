@@ -121,11 +121,14 @@ const UsersList = () => {
           placeholder="Search by name"
           className="mb-4 px-3 py-2 border-b"
         />
+        <div className="flex w-96 justify-between">
         <Dropdown
           options={uniqueCompanies}
           selected={selectedCompany}
           onSelect={(company) => dispatch(setSelectedCompany(company))}
         />
+        <ExportUsersButton />
+        </div>
       </div>
 
       <table className="min-w-full divide-y divide-gray-200">
@@ -156,7 +159,7 @@ const UsersList = () => {
           Show more{" "}
         </div>
       )}
-      <ExportUsersButton />
+      
 
       <Pagination
         currentPage={page}
