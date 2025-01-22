@@ -2,7 +2,7 @@
 import { useUpdateUserMutation } from "@/store/services/usersApi";
 import { User } from "@/types/user";
 import { useState } from "react";
-
+import { motion } from "framer-motion";
 interface EditUserFormProps {
   user: User;
   onClose: () => void;
@@ -30,9 +30,33 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, onClose }) => {
   };
 
   return (
+    <motion.div
+    initial={{
+      y: "-100%", 
+      scale: 0.8, 
+      opacity: 0, 
+    }}
+    animate={{
+      y: "0%", 
+      scale: 1,
+      opacity: 1, 
+    }}
+    exit={{
+      y: "-100%", 
+      scale: 0.8, 
+      opacity: 0,
+    }}
+    transition={{
+      duration: 0.7, 
+      ease: "easeInOut", 
+    }}
+      className="absolute w-full h-full top-0 left-0 rounded-xl bg-sky-800  p-10"
+    >
+      
+
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 absolute w-full h-full "
+      className="space-y-4  "
     >
       <div className="w-60">
         <label
@@ -129,6 +153,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, onClose }) => {
         </button>
       </div>
     </form>
+    </motion.div>
   );
 };
 

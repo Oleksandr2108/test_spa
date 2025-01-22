@@ -122,12 +122,12 @@ const UsersList = () => {
           className="mb-4 px-3 py-2 border-b"
         />
         <div className="flex w-96 justify-between">
-        <Dropdown
-          options={uniqueCompanies}
-          selected={selectedCompany}
-          onSelect={(company) => dispatch(setSelectedCompany(company))}
-        />
-        <ExportUsersButton />
+          <Dropdown
+            options={uniqueCompanies}
+            selected={selectedCompany}
+            onSelect={(company) => dispatch(setSelectedCompany(company))}
+          />
+          <ExportUsersButton />
         </div>
       </div>
 
@@ -142,10 +142,12 @@ const UsersList = () => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {filteredUsers?.map((user: User) => (
+          {filteredUsers?.map((user: User, index: number) => (
             <UserItem
               user={user}
               key={user.id}
+              index={index}
+              limit={limit}
             />
           ))}
         </tbody>
@@ -159,7 +161,6 @@ const UsersList = () => {
           Show more{" "}
         </div>
       )}
-      
 
       <Pagination
         currentPage={page}

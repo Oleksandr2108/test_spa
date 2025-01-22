@@ -15,7 +15,7 @@ const UserDetailPage = () => {
   }
 
   return (
-    <div className="w-[700px] m-auto">
+    <div className="w-[700px] m-auto relative">
       <HeaderUserDetail />
       <div className="bg-gray-100 p-5 rounded-bl-xl rounded-br-xl">
         <CompanySection />

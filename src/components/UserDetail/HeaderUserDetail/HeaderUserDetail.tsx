@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import EditUserForm from "../EditUserForm/EditUserForm";
+import { AnimatePresence } from "framer-motion";
 
 const HeaderUserDetail = () => {
   const user = useSelector((state: RootState) => state.users.user);
@@ -14,7 +15,7 @@ const HeaderUserDetail = () => {
     return null;
   }
   return (
-    <div className="flex items-center  w-full bg-blue-800 rounded-tl-xl rounded-tr-xl  p-5 relative">
+    <div className="flex items-center  w-full bg-blue-800 rounded-tl-xl rounded-tr-xl  p-5 ">
       <div className="bg-white rounded-full w-20 h-20"></div>
       <div className="ml-5">
         <h1 className="text-white text-4xl">{user.name}</h1>
@@ -43,12 +44,14 @@ const HeaderUserDetail = () => {
       >
         Edit
       </button>
-      {isEditing && (
-        <EditUserForm
-          user={user}
-          onClose={() => setIsEditing(false)}
-        />
-      )}
+      <AnimatePresence>
+        {isEditing && (
+          <EditUserForm
+            user={user}
+            onClose={() => setIsEditing(false)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Leanne Graham",
+    "name": "Leanne Graha",
     "username": "Bret",
     "email": "Sincere@april.biz",
     "address": {
@@ -14,8 +14,8 @@
         "lng": "81.1496"
       }
     },
-    "phone": "1-770-736-8031 x56442",
-    "website": "hildegard.org",
+    "phone": "1-770-736-8031 x564",
+    "website": "hildegard",
     "company": {
       "id": 1,
       "name": "Romaguera-Crona",
