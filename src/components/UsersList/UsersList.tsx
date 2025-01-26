@@ -19,11 +19,15 @@ import {
 import { RootState } from "@/store/store";
 import ExportUsersButton from "../ExportComponent/Export";
 
-const UsersList = () => {
+interface UsersListProps {
+  initialUsers: User[];
+}
+const UsersList = ({ initialUsers }: UsersListProps) => {
   const dispatch = useDispatch();
-  const { data: users = [] } = useGetUsersQuery();
-
   const searchParams = useSearchParams();
+
+  const { data: users = initialUsers } = useGetUsersQuery();
+
   const searchQuery = searchParams?.get("search") || "";
   const currentPage = searchParams?.get("page") || "1";
   const currentLimit = searchParams?.get("limit") || "5";
@@ -79,7 +83,7 @@ const UsersList = () => {
       )
     )
   ).map((company) => JSON.parse(company));
-  console.log(users.length);
+  
   const handleLimitChange = () => {
     if (users.length > limit) {
       const newLimit = limit + 5;

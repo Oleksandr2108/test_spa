@@ -4,8 +4,6 @@ import AddresSection from "@/components/UserDetail/AddresSection/AddresSection";
 import CompanySection from "@/components/UserDetail/CompanySection/CompanySection";
 import HeaderUserDetail from "@/components/UserDetail/HeaderUserDetail/HeaderUserDetail";
 import { RootState } from "@/store/store";
-
-import React from "react";
 import { useSelector } from "react-redux";
 
 const UserDetailPage = () => {

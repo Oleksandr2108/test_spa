@@ -1,5 +1,5 @@
-import { User } from "@/types/user";
-import { BASE_URL } from "@/utils/constants";
+import { User } from "../../types/user";
+import { BASE_URL } from "../../utils/constants";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const usersApi = createApi({
@@ -11,6 +11,7 @@ export const usersApi = createApi({
   endpoints: (builder) => ({
     getUsers: builder.query<User[], void>({
       query: () => "/users.json",
+      transformResponse: (response: User[]) => response,
       providesTags: ["User"],
     }),
     getUserById: builder.query<User, string>({

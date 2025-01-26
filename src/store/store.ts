@@ -1,12 +1,14 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { usersApi } from "./services/usersApi";
 import usersReduser from "./slices/usersSlice";
 
+const rootReducer = combineReducers({
+  users: usersReduser,
+  [usersApi.reducerPath]: usersApi.reducer,
+});
+
 export const store = configureStore({
-  reducer: {
-    users: usersReduser,
-    [usersApi.reducerPath]: usersApi.reducer,
-  },
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(
       usersApi.middleware
@@ -15,3 +17,4 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export { rootReducer };

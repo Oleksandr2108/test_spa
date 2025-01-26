@@ -6,18 +6,21 @@ import { setUsers } from "@/store/slices/usersSlice";
 import { RootState } from "@/store/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-const Chart = dynamic(() => import("@/components/Chart/Chart"), {
-  ssr: false,
-});
+import { User } from "@/types/user";
+import Chart from "@/components/Chart/Chart";
 
 const MapUsers = dynamic(() => import("@/components/Map/Map"), {
   ssr: false,
+  loading: () => <div>Loading Map...</div>,
 });
 
-export default function AnalyticsPage() {
+interface AnalyticsProps {
+  initialUsers: User[];
+}
+
+const AnalyticsPage = ({ initialUsers }: AnalyticsProps) => {
   const dispatch = useDispatch();
-  const { data: users = [] } = useGetUsersQuery();
+  const { data: users = initialUsers } = useGetUsersQuery();
 
   useEffect(() => {
     if (users.length > 0) {
@@ -26,10 +29,6 @@ export default function AnalyticsPage() {
   }, [users, dispatch]);
 
   const totalUsers = useSelector((state: RootState) => state.users.totalUsers);
-
-  if (typeof window === 'undefined') {
-    return <div>Loading on Server...</div>;
-  }
 
   return (
     <div>
@@ -56,4 +55,6 @@ export default function AnalyticsPage() {
       </div>
     </div>
   );
-}
+};
+
+export default AnalyticsPage;
